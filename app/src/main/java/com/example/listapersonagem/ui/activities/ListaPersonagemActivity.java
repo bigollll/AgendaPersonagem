@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.listapersonagem.R;
@@ -19,12 +20,17 @@ import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity {
 
+    private final PersonagemDAO dao = new PersonagemDAO();
+
    
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_personagem);
         setTitle("Lista de Personagens");
+
+        dao.salva(new Personagem("Ken", "1,80", "02041979"));
+        dao.salva(new Personagem("Ryu", "1,80", "02041979"));
 
 
 
@@ -52,7 +58,7 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        PersonagemDAO dao = new PersonagemDAO();
+
         ListView listaDePersonagens = findViewById(R.id.lista_personagem);
         List<Personagem> personagens = dao.todos();
         listaDePersonagens.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dao.todos()));
@@ -62,16 +68,17 @@ public class ListaPersonagemActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int posicao, long id) {
                 Personagem personagemEscolhido = personagens.get(posicao);
-                Log.i("Personagem", "" + personagemEscolhido);
                 Intent vaiParaFormulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-                //intent para mudar para outro lugar
+                vaiParaFormulario.putExtra("personagem", personagemEscolhido);
                 startActivity(vaiParaFormulario);
+                //intent para mudar para outro lugar
+                //Para pegar itens em posiçoes especificos
             }
 
 
 
         });
-        //Para pegar intens em posiçoes especificos
+
     }
 
 }
