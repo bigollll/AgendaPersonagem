@@ -18,6 +18,10 @@ public class Personagem implements Serializable {
     }
 //alt + ins para colocar get/set e selecionar todos os itens que quer pegar
 
+    public Personagem (){
+
+    }
+
     public String getNome() {
         return nome;
     }

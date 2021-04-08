@@ -35,3 +35,7 @@ public class PersonagemDAO {
         return new ArrayList<>(personagens);
     }
 }
+
+
+//control + alt + o = apaga as linhas n ultilizadas
+

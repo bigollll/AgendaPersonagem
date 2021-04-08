@@ -2,7 +2,6 @@ package com.example.listapersonagem.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,15 +26,18 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     protected void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_personagem);
+        //colocando titulo
         setTitle("Lista de Personagens");
 
         dao.salva(new Personagem("Ken", "1,80", "02041979"));
         dao.salva(new Personagem("Ryu", "1,80", "02041979"));
+        configuraFacNovoPersonagem();
 
 
+    }
 
-        //List<String> personagem = new ArrayList<>(Arrays.asList("Alex", "Ken", "Ryu"));
-
+    private void configuraFacNovoPersonagem() {
+        //pegando o botão
         FloatingActionButton botaoNovoPersonagem = findViewById(R.id.fab_novo_personagem);
         botaoNovoPersonagem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,17 +45,9 @@ public class ListaPersonagemActivity extends AppCompatActivity {
                 startActivity(new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class));
             }
         });
-
-
-        /*TextView primeiroPersonagem = findViewById(R.id.textView);
-        TextView segundoPersonagem = findViewById(R.id.textView2);
-        TextView terceiroPersonagem = findViewById(R.id.textView3);
-        primeiroPersonagem.setText(personagem.get(0));
-        segundoPersonagem.setText(personagem.get(1));
-        terceiroPersonagem.setText(personagem.get(2));*/
     }
-//simplificação do código acima para n ter que ficar colocando toda vez uma linha quando quiser adicionar mais uma linha
 
+    //proteção de dados para n serem apagados qnd der back
     @Override
     protected void onResume() {
         super.onResume();
@@ -82,3 +76,6 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     }
 
 }
+
+
+//control + alt + m = refatora linhas escolhidas para virar um metodo

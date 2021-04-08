@@ -1,12 +1,12 @@
 package com.example.listapersonagem.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.listapersonagem.R;
 import com.example.listapersonagem.dao.PersonagemDAO;
@@ -18,21 +18,31 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
     private EditText campoAltura;
     private EditText campoNascimento;
     private final PersonagemDAO dao = new PersonagemDAO();   //banco de dados do personagem
+    private Personagem Personagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_personagem);
+        //colocando titulo
         setTitle("Formulário de Personagens");
+        inicializaCampos();
 
 
+        configuraBotaoSalvar();
 
+        Intent dados = getIntent();
+        if(dados.hasExtra("personagem")){
+            Personagem personagem = (Personagem) dados.getSerializableExtra("personagem");
+            campoNome.setText(personagem.getNome());
+            campoAltura.setText(personagem.getAltura());
+            campoNascimento.setText(personagem.getNascimento());
+        } else {
+            Personagem = new Personagem();
+        }
+    }
 
-        campoNome = findViewById(R.id.eddittext_nome);
-        campoAltura = findViewById(R.id.edittext_altura);
-        campoNascimento = findViewById(R.id.edittext_nascimento);
-
-
+    private void configuraBotaoSalvar() {
         Button botaoSalvar = findViewById(R.id.button_salvar);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,26 +56,19 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
                 dao.salva(personagemSalvo);
                 finish();
 
-                //startActivity(new Intent(FormularioPersonagemActivity.this, ListaPersonagemActivity.class));
                 personagemSalvo.setNome(nome);
                 personagemSalvo.setAltura(altura);
                 personagemSalvo.setNascimento(nascimento);
                 dao.edita(personagemSalvo);
-
-
                 //metodo criado para facilitar a colocação dos atributos
-                /*Toast.makeText(FormularioPersonagemActivity.this,
-                        personagemSalvo.getNome() + " - " + personagemSalvo.getAltura() + " - " + personagemSalvo.getNascimento(), Toast.LENGTH_SHORT).show();*/
-                //Toast.makeText(FormularioPersonagemActivity.this, text: "Estou funcionando", Toast.LENGTH_SHORT).show();
-
-
             }
         });
+    }
 
-        Intent dados = getIntent();
-        Personagem personagem = (Personagem) dados.getSerializableExtra("personagem");
-        campoNome.setText(personagem.getNome());
-        campoAltura.setText(personagem.getAltura());
-        campoNascimento.setText(personagem.getNascimento());
+    private void inicializaCampos() {
+        //pegando id dos campos
+        campoNome = findViewById(R.id.eddittext_nome);
+        campoAltura = findViewById(R.id.edittext_altura);
+        campoNascimento = findViewById(R.id.edittext_nascimento);
     }
 }
