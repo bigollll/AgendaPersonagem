@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class Personagem implements Serializable {
+
     private String nome;
     private String altura;
     private String nascimento;
@@ -13,12 +14,12 @@ public class Personagem implements Serializable {
     public Personagem(String nome, String altura, String nascimento) {
 
         this.nome = nome;
-        this.altura= altura;
+        this.altura = altura;
         this.nascimento = nascimento;
     }
 //alt + ins para colocar get/set e selecionar todos os itens que quer pegar
 
-    public Personagem (){
+    public Personagem() {
 
     }
 
@@ -52,12 +53,16 @@ public class Personagem implements Serializable {
         return nome;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
+    }
+
+    public boolean idValido() {
+        return id > 0;
     }
 
 
