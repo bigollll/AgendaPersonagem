@@ -61,12 +61,12 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                finalizaPersonagem();
+                finalizaFormulario();
             }
         });
     }
 
-    private void finalizaPersonagem() {
+    private void finalizaFormulario() {
         preechePersonagem();
 
         if (personagem.idValido()) {
