@@ -30,11 +30,34 @@ public class PersonagemDAO {
         }
     }
 
+    private Personagem buscaPersonagemId(Personagem personagem){
+        for(Personagem p:
+                personagens){
+            if(p.getId() == personagem.getId()){
+                return p;
+            }
+        }
+        return null;
 
-    public List<Personagem> todos() {
-        return new ArrayList<>(personagens);
+    }
+
+
+
+
+    public List<Personagem> todos() { return new ArrayList<>(personagens);
+    }
+
+    public void remove(Personagem personagem){
+
+        Personagem personagemDevolvido = buscaPersonagemId(personagem);
+
+        if(personagemDevolvido != null){
+            personagens.remove(personagemDevolvido);
+        }
+
     }
 }
+
 
 
 //control + alt + o = apaga as linhas n ultilizadas

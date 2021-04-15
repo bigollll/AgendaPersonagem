@@ -35,6 +35,7 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         inicializaCampos();
         configuraBotaoSalvar();
         carregaPersonagem();
+        //metodos criados para otimização do código
     }
 
     private void carregaPersonagem() {

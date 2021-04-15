@@ -2,6 +2,8 @@ package com.example.listapersonagem.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,14 +17,13 @@ import com.example.listapersonagem.dao.PersonagemDAO;
 import com.example.listapersonagem.model.Personagem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
-
 import static com.example.listapersonagem.ui.activities.ConstantesActivities.CHAVE_PERSONAGEM;
 
-public class ListaPersonagemActivity extends AppCompatActivity {
+public class ListaPersonagemActivity<onCreateItemSelected> extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Lista de Personagens";
     private final PersonagemDAO dao = new PersonagemDAO();
+    private ArrayAdapter<Personagem> adapter;
 
 
     @Override
@@ -32,6 +33,7 @@ public class ListaPersonagemActivity extends AppCompatActivity {
         //colocando titulo
         setTitle(TITULO_APPBAR);
         configuraFacNovoPersonagem();
+        configuraLista();
 
 
     }
@@ -55,44 +57,69 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        configuraLista();
+        atualizaPersonagem();
+    }
 
+    private void atualizaPersonagem() {
+        adapter.clear();
+        adapter.addAll(dao.todos());
+        //limpa o adapter e remonta com o dao
+    }
+
+    private void remove(Personagem personagem){
+        dao.remove(personagem);
+        adapter.remove(personagem);
+        //metodo para remover algo da lista segurando o click
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remover");
+        //o que vai aparecer se a pessoa segurar o click pra remover
+    }
+
+    public boolean onContextItemSelected(@NonNull MenuItem item){
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Personagem personagemEscolhido = adapter.getItem(menuInfo.position);
+        remove(personagemEscolhido);
+        return  super.onContextItemSelected(item);
     }
 
     private void configuraLista() {
         ListView listaDePersonagens = findViewById(R.id.lista_personagem);
-        final List<Personagem> personagens = dao.todos();
-        listaDePersonagens(listaDePersonagens);
-
-        //Para persistencia de dados qnd der back
+        configuraAdapter(listaDePersonagens);
         configuraItemPorClique(listaDePersonagens);
+        //Para persistencia de dados qnd der back
+        registerForContextMenu(listaDePersonagens);
     }
 
     private void configuraItemPorClique(ListView listaDePersonagens) {
+
         listaDePersonagens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long id) {
                 abreFormularioModoEditar(adapterView, posicao);
             }
-
-            private void abreFormularioModoEditar(AdapterView<?> adapterView, int posicao) {
-                Personagem personagem = (Personagem) adapterView.getItemAtPosition(posicao);
-                Intent vaiParaFormulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-                vaiParaFormulario.putExtra(CHAVE_PERSONAGEM, personagem);
-                startActivity(vaiParaFormulario);
-                //intent para mudar para outro lugar
-                //Para pegar itens em posiçoes especificos
-            }
-
-
         });
     }
 
-    private void listaDePersonagens(ListView listaDePersonagens) {
-        listaDePersonagens.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dao.todos()));
+    private void abreFormularioModoEditar(AdapterView<?> adapterView, int posicao) {
+        Personagem personagem = (Personagem) adapterView.getItemAtPosition(posicao);
+        Intent vaiParaFormulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
+        vaiParaFormulario.putExtra(CHAVE_PERSONAGEM, personagem);
+        startActivity(vaiParaFormulario);
+        //intent para mudar para outro lugar
+        //Para pegar itens em posiçoes especificos
+    }
+
+    private void configuraAdapter(ListView listaDePersonagens) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        listaDePersonagens.setAdapter(adapter);
+
     }
 
 }
-
-
+//ctrl + alt + F cria um adapter para parametrizar e utilizar recursos de dentro do oadapter
+//Shift + F6 = vc refatora um nome e todos sao refatorados
 //control + alt + m = refatora linhas escolhidas para virar um metodo
