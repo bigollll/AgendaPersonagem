@@ -78,8 +78,6 @@ public class ListaPersonagemActivity<onCreateItemSelected> extends AppCompatActi
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        //menu.add("Remover");
-        //menu.add("Teste");
         //o que vai aparecer se a pessoa segurar o click pra remover
         getMenuInflater().inflate(R.menu.activity_lista_personagens_menu, menu);
     }
