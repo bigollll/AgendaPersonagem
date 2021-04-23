@@ -32,7 +32,7 @@ public class ListaPersonagemActivity<onCreateItemSelected> extends AppCompatActi
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_personagem);
-        //colocando titulo
+        //colocando titulo.
         setTitle(TITULO_APPBAR);
         configuraFacNovoPersonagem();
         configuraLista();
